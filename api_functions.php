@@ -94,8 +94,6 @@ function login_callbackapi($r, &$result) {
 	add_urls($result);
 	add_invite_text($result);
 
-	//$newuser will be 1 for insert, 2 for update
-	$result['google'] = "AIzaSyBE32csNi3_SyGVrTSNMMSFH5t8g2M9zHU";
 	return true; 
 }
 
