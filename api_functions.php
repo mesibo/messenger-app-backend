@@ -48,6 +48,7 @@ function sendOtpToUser($phone, $otp) {
 
 //$user will always be null in login
 function login_callbackapi($r, &$result) {
+	$name = GetRequestField($r, 'name', '');
 	$phone = GetRequestField($r, 'phone', '');
 	$otp = GetRequestField($r, 'otp', '');
 	$appid = GetRequestField($r, 'appid', '');
@@ -57,11 +58,16 @@ function login_callbackapi($r, &$result) {
 		return false;
 	}
 
+	$phone = ltrim($phone, " +0±\n\r\t\v\0");
+
 	if(strlen($phone) < 9)
 		return false;
 
 	// if user has not supplied otp, let's generate one
 	if($otp == '') {
+		$result['title'] = "Important: OTP";
+		$result['message'] = "mesibo will NOT send OTP. Instead, you can generate OTPs from your mesibo account. Sign up at https://mesibo.com/console and click on the `Demo Apps` link from the left navigation bar and follow the instructions.";
+		$result['delay'] = 2000;
 		$response = MesiboOTP($phone, 5, 300, 1);
 
 		// should not happen. If it happens, check the quota
@@ -76,7 +82,7 @@ function login_callbackapi($r, &$result) {
 		return true;
 	}
 
-	$response = MesiboAddUser($phone, $appid, 0, 365*24*60, 0, $otp, 0);
+	$response = MesiboAddUser($name, $phone, $appid, 0, 365*24*60, 0, $otp, 0);
 	if(!$response || !$response['result']) {
 		//print_r($response);
 		$result['error'] = 'BADUSER';

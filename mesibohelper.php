@@ -18,10 +18,11 @@ function MesiboOTP($address, $tries, $expiry, $reuse) {
 	return MesiboAPI($parameters);
 }
 
-function MesiboAddUser($address, $appid, $session, $expiry, $flag, $otp, $restrictions=0) {
+function MesiboAddUser($name, $address, $appid, $session, $expiry, $flag, $otp, $restrictions=0) {
     
 	$parameters=array();
 	$parameters['op']='useradd';
+	$parameters['name']=$name;
 	$parameters['addr']=$address;
 	$parameters['appid']=$appid;
 	$parameters['session']=$session;
